@@ -7,7 +7,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./category-list.component.css']
 })
 export class CategoryListComponent implements OnInit {
-
   constructor(
     private router: Router
   ) { }
