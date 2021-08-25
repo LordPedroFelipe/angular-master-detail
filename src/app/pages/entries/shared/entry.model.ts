@@ -1,5 +1,4 @@
-import { renderFlagCheckIfStmt } from '@angular/compiler/src/render3/view/template';
-import { Category } from '../../categories/shared/category.model';
+import { Category } from "../../categories/shared/category.model";
 
 export class Entry {
   constructor(
@@ -9,17 +8,22 @@ export class Entry {
     public type?: string,
     public amount?: string,
     public date?: string,
-    public paid?: string,
-    public categoryId?: string,
-    public category?: Category,
-  ){}
+    public paid?: boolean,
+    public categoryId?: number,
+    public category?: Category
+  ){ }
+
 
   static types = {
     expense: 'Despesa',
-    renevue: 'Receita'
+    revenue: 'Receita'
+  };
+
+  static fromJson(jsonData: any): Entry {
+    return Object.assign(new Entry(), jsonData);
   }
 
   get paidText(): string {
-    return this.paid ? 'Pago' : 'Pendente';
+    return this.paid ? 'Pago' : 'Pedente';
   }
 }
