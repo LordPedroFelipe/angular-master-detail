@@ -24,14 +24,14 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
+    <tr *ngFor="let category of categories">
       <td>
-        <strong>Lazer</strong><br>
-        <small>Cinema, praia</small>
+        <strong>{{ category.name }}</strong><br>
+        <small>{{ category.description }}</small>
       </td>  
       <td>
-        <button (click)="editCategory(12)" class="btn btn-outline-info btn-sm mr-2">Editar</button>
-        <button (click)="deleteCategory()" class="btn btn-outline-danger btn-sm">Excluir</button>
+        <button (click)="editCategory(category.id)" class="btn btn-outline-info btn-sm mr-2">Editar</button>
+        <button (click)="deleteCategory(category)" class="btn btn-outline-danger btn-sm">Excluir</button>
       </td>         
     </tr>
   </tbody>

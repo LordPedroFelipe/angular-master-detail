@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -72,7 +71,8 @@ export class CategoryService {
     return jsonData as Category;
   }
 
-  private handleError(error: any[]): Observable<any> {
-    console.log("Erro na requisição => ", error);
+  protected handleError(error: any): Observable<any>{
+    console.log("ERRO NA REQUISIÇÃO => ", error);
+    return throwError(error);
   }
 }
