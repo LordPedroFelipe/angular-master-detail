@@ -17,10 +17,10 @@
   </div>
 </div>
 
-<form>
+<form [formGroup]="categoryForm">
   <div class="card">
     <div class="card-header">
-      Informaçõies sobre a categoria
+      Informações sobre a categoria {{ currentAction }}
     </div>
     <div class="card-body">
       <div class="form-row">
