@@ -1,3 +1,4 @@
+import { toastr } from 'toastr';
 import { Component, OnInit, AfterContentChecked } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router'
@@ -37,6 +38,16 @@ export class CategoryFormComponent implements OnInit, AfterContentChecked {
   ngAfterContentChecked() {
     this.setPageTitle();
   }  
+
+  submitForm() {
+    this.submittingForm = true;
+
+    if (this.currentAction == 'new') {
+      this.createCategory();
+    } else {
+      this.updateCategory();
+    }
+  }  
   
   private setCurrentAction() {
     if (this.route.snapshot.url[0].path == 'new') {
@@ -72,8 +83,45 @@ export class CategoryFormComponent implements OnInit, AfterContentChecked {
     if (this.currentAction == 'new') { 
       this.pageTitle = 'Cadastro de Nova categoria';
     } else {
-      this.pageTitle = 'Editando categoria: ' + this.category.name || '';
+      const categoryName = this.category.name || '';
+      this.pageTitle = 'Editando categoria: ' + categoryName;
     }
+  }
+
+  private createCategory() {
+    const category: Category = Object.assign(new Category, this.categoryForm.value);
+
+    this.categoryService.create(category).subscribe(
+      category => this.actionsForSuccess(category),
+      error => this.actionsForError(error)
+    );
+  }
+
+  private updateCategory() {
+    const category: Category = Object.assign(new Category, this.categoryForm.value);
+
+    this.categoryService.update(category).subscribe(
+      category => this.actionsForSuccess(category),
+      error => this.actionsForError(error)
+    );
+
+  }
+
+  private actionsForSuccess(category: Category) {
+    // toastr.success("Solicitação processada com sucesso!");
+    this.router.navigateByUrl('categories', {skipLocationChange: true}).then(
+      () => this.router.navigateByUrl('categories/'+ category.id.toString()+ '/edit')
+    );
+  }
+
+  private actionsForError(error: any) {
+    toastr.error("Erro ao processar sua solicitação!");
+
+    this.submittingForm = false;
+    if (error.status === 422) {
+      this.serverErrorMessages = JSON.parse(error._body).errors;
+    } else 
+      this.serverErrorMessages = ["Falha de comunicação com o servidor."]
   }
 
 }
