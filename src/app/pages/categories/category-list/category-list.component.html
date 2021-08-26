@@ -20,7 +20,7 @@
   <thead>
     <tr class="bg-primary text-light">
       <th>Categoria</th>
-      <th>Ações</th>
+      <th class="text-center">Ações</th>
     </tr>
   </thead>
   <tbody>
@@ -29,7 +29,7 @@
         <strong>{{ category.name }}</strong><br>
         <small>{{ category.description }}</small>
       </td>  
-      <td>
+      <td class="text-center">
         <button (click)="editCategory(category.id)" class="btn btn-outline-info btn-sm mr-2">Editar</button>
         <button (click)="deleteCategory(category)" class="btn btn-outline-danger btn-sm">Excluir</button>
       </td>         
