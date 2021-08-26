@@ -3,22 +3,22 @@ import { Injector } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { BaseResourceModel } from 'src/app/shared/models/base-resource.model';
-
 export abstract class BaseResourceService<T extends BaseResourceModel> {
 
   protected http: HttpClient;
 
   constructor(
     protected apiPath: string,
-    protected injector: Injector
+    protected injector: Injector,
+    protected jsonDataToResourceFn: (jsonData: any) => T
   ) { 
     this.http = injector.get(HttpClient);
   }
 
   getAll(): Observable<T[]> {
     return this.http.get(this.apiPath).pipe(
+      map(this.jsonDataToResources.bind(this)),
       catchError(this.handleError),
-      map(this.jsonDataToResources)
     )
   }
 
@@ -26,15 +26,15 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
     const url = `${this.apiPath}/${id}`;
     
     return this.http.get(url).pipe(
+      map(this.jsonDataToResource.bind(this)),      
       catchError(this.handleError),
-      map(this.jsonDataToResource)
     )
   }
 
   create(resource: T): Observable<T> {
     return this.http.post(this.apiPath, resource).pipe(
+      map(this.jsonDataToResource.bind(this)),
       catchError(this.handleError),
-      map(this.jsonDataToResource)
     );
   }
 
@@ -42,8 +42,8 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
     const url = `${this.apiPath}/${resource.id}`;
 
     return this.http.put(url, resource).pipe(
+      map(() => resource),
       catchError(this.handleError),
-      map(() => resource)
     );
   }
 
@@ -59,13 +59,14 @@ export abstract class BaseResourceService<T extends BaseResourceModel> {
   protected jsonDataToResources(jsonData: any[]): T[] {
     const resources: T[] = [];
     jsonData.forEach(element => {
-      resources.push(element as T)
+      const entry = this.jsonDataToResourceFn(element);
+      resources.push(entry);
     });
     return resources;
   }
 
   protected jsonDataToResource(jsonData: any): T {
-    return jsonData as T;
+    return this.jsonDataToResourceFn(jsonData);
   }
 
   protected handleError(error: any): Observable<any>{
