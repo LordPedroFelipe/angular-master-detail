@@ -10,6 +10,9 @@ import { CategoryListComponent } from './category-list/category-list.component';
     SharedModule,
     CategoriesRoutingModule,
   ],
-  declarations: [CategoryListComponent, CategoryFormComponent]
+  declarations: [
+    CategoryListComponent, 
+    CategoryFormComponent
+  ]
 })
 export class CategoriesModule { }
