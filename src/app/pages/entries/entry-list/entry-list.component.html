@@ -1,9 +1,4 @@
-<nav class="mb-5">
-  <ul class="breadcrumb">
-    <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
-    <li class="breadcrumb-item" active>Lançamento</li>
-  </ul>
-</nav>
+<app-bread-crumb [items]="[{text: 'Lançamentos'}]"></app-bread-crumb>
 
 <div class="row mb-4">
   <div class="col-md">
@@ -26,7 +21,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let entry of entries">
+    <tr *ngFor="let entry of resources">
       <td>
         <strong>{{ entry.name }}</strong><br>
         <small class="text-success">{{entry.date}}</small><br>
@@ -42,8 +37,8 @@
         <span class="badge badge-light">{{entry.paidText}}</span>
       </td>  
       <td class="text-center">
-        <button (click)="editEntry(entry.id)" class="btn btn-outline-info btn-sm mr-2">Editar</button>
-        <button (click)="deleteEntry(entry)" class="btn btn-outline-danger btn-sm">Excluir</button>
+        <button (click)="editResource(entry.id)" class="btn btn-outline-info btn-sm mr-2">Editar</button>
+        <button (click)="deleteResource(entry)" class="btn btn-outline-danger btn-sm">Excluir</button>
       </td>         
     </tr>
   </tbody>
